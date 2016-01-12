@@ -1,6 +1,7 @@
 {
     "name": "triasbrata/modulegenerator",
     "description": "module ini memungkinkan user untuk membuat view,controller,d form request dan model",
+    "license":"Apache-2.0",
     "type": "project",
     "authors": [
         {
@@ -8,10 +9,12 @@
             "email": "triasbrata@gmail.com"
         }
     ],
-  "autoload": {
+    "autoload": {
         "psr-4":{
-            "Bitdev\\ModuleGenerator":"src/"
+            "Bitdev\\ModuleGenerator\\":"src/"
         }
     },
-    "require": {}
+    "require": {
+        "php": ">=5.5.9",
+    }
 }
