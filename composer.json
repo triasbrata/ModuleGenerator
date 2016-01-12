@@ -8,8 +8,10 @@
             "email": "triasbrata@gmail.com"
         }
     ],
-    "psr-4":{
-        "Bitdev\\ModuleGenerator" : "src/"
+  "autoload": {
+        "psr-4":{
+            "Bitdev\\ModuleGenerator":"src/"
+        }
     },
     "require": {}
 }
