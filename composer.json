@@ -1,0 +1,15 @@
+{
+    "name": "triasbrata/modulegenerator",
+    "description": "module ini memungkinkan user untuk membuat view,controller,d form request dan model",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Trias Bratayudhana",
+            "email": "triasbrata@gmail.com"
+        }
+    ],
+    "psr-4":{
+        "Bitdev\\ModuleGenerator" : "src/"
+    },
+    "require": {}
+}
