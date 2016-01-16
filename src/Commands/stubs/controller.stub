@@ -3,31 +3,31 @@
 namespace DummyNamespace;
 
 use Bitdev\ModuleGenerator\Http\Controllers\Controller;
-use Bitdev\ModuleGenerator\Repositories\RepositorieInterface;
 
-use Bitdev\ModuleGenerator\Http\Requests\DummyRequest;
+use Bitdev\Project\Repositories\Eloquent\Model as Model;
+use Bitdev\Project\Http\Requests\DummyRequest;
 
 class DummyClass extends Controller
 {
-     function __construct(RepositorieInterface $repo) {
+     function __construct(Model $repo) {
      	parent::__construct($repo,'DummyRequest');
      }
      /**
       * code for create and update data in data store
-      * @param RepositorieInterface $model 
+      * @param Model $model 
       * @param DummyRequest         $r     RequestHandler
       * @param string               $from  store|update
       */
-     public function CreateOrUpdate(RepositorieInterface $model, DummyRequest $r, $from)
+     public function CreateOrUpdate(Model $model, DummyRequest $r, $from)
      {
         return $model->fill($r->all())->save() ? $this->routeAndSuccess($from) : $this->routeBackWithError($form);
      }
      /**   
       *delete data in data store
-      * @param  RepositorieInterface $model [description]
+      * @param  Model $model [description]
       * @return [type]                      [description]
       */
-     public function destroy(RepositorieInterface $model)
+     public function destroy(Model $model)
      {
         return  $model->delete() ? $this->routeAndSuccess('destroy') : $this->routeBackWithError('destroy');
      }

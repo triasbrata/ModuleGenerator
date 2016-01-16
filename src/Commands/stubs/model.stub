@@ -1,9 +1,9 @@
 <?php namespace DummyNamespace;
 
 use DummyAbstractModel as Model;
-use Bitdev\ModuleGenerator\Repositories\RepositorieInterface;
+use Bitdev\ModuleGenerator\Contracts\ModelInterface;
 
-class DummyClass extends Model implements RepositorieInterface
+class DummyClass extends Model implements ModelInterface
 {
 		protected $guarded = ['id'];
 }

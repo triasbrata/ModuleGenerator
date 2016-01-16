@@ -1,7 +1,6 @@
 <?php
 
-namespace Bitdev\ModuleGenerator\Console\Commands;
-use Illuminate\Console\GeneratorCommand;
+namespace Bitdev\ModuleGenerator\Commands;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -63,7 +62,7 @@ class CreateController extends GeneratorCommand
     protected function replaceRequest(&$stub, $name)
     {
         $stub = str_replace('DummyRequest', $name, $stub);
-        $this->call('make:request',['name'=>$name]);
+        $this->call('create:request',['name'=>$name]);
         return $this;
     }
     /**

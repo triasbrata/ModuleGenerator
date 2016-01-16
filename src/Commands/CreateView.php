@@ -1,10 +1,11 @@
 <?php
 
-namespace Bitdev\ModuleGenerator\Console\Commands;
+namespace Bitdev\ModuleGenerator\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-
+use App;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -13,10 +14,11 @@ class CreateView extends Command
 
     protected $path;
     protected $files;
-    protected $views = ['index','create','edit','show','form'];
+    protected $views = ['index','create','edit','show'];
     function __construct(Filesystem $files) 
     {
-        $this->path = $_SERVER['PWD'].'/resources/views/';
+        
+        $this->path = App::getInstance()['config']['path.generate.view'];
         $this->files = $files;
         parent::__construct();
 
@@ -40,7 +42,7 @@ class CreateView extends Command
      */
     protected function getStub($name)
     {
-        return __DIR__.'/stubs/view//'.$name.'.stub';
+        return __DIR__.'/stubs/view/'.$name.'.stub';
     }
     /**
      * Get the destination class path.
@@ -50,8 +52,19 @@ class CreateView extends Command
      */
     protected function getPath($name)
     {
-        $path = $this->path.str_replace('/_', '/',strtolower(implode('_',array_slice(preg_split('/(?=[A-Z])/',$this->argument('name')), 1))));
-        return $path.'/'.$name.'.blade.php';
+        $path = str_finish($this->compilePath($name),'/');
+        
+        return $path.$name.'.blade.php';
+    }
+    public function compilePath($name)
+    {
+        $nextpath = str_replace('/_', '/',strtolower(implode('_',array_slice(preg_split('/(?=[A-Z])/',$this->argument('name')), 1))));
+
+        if(empty($nextpath)){
+            $nextpath = str_finish($this->argument('name'),'/');
+        }
+        $path = str_finish($this->path,'/').$nextpath;
+        return $path;
     }
     /**
      * Build the directory for the class if necessary.
@@ -77,9 +90,7 @@ class CreateView extends Command
             $this->files->put($path, $this->files->get($this->getStub($view)));
             $this->info("view $view created successfully");
            }
-
-        }
-        
+        }        
     }
     protected function getArguments()
     {

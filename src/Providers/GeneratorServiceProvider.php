@@ -4,10 +4,11 @@ namespace Bitdev\ModuleGenerator\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use Bitdev\ModuleGenerator\Console\Commands\CreateController;
-use Bitdev\ModuleGenerator\Console\Commands\CreateModel;
-use Bitdev\ModuleGenerator\Console\Commands\CreateView;
-use Bitdev\ModuleGenerator\Console\Commands\CreateModule;
+use Bitdev\ModuleGenerator\Commands\CreateController;
+use Bitdev\ModuleGenerator\Commands\CreateModel;
+use Bitdev\ModuleGenerator\Commands\CreateView;
+use Bitdev\ModuleGenerator\Commands\CreateRequest;
+use Bitdev\ModuleGenerator\Commands\CreateModule;
 
 class GeneratorServiceProvider extends ServiceProvider
 {
@@ -33,8 +34,9 @@ class GeneratorServiceProvider extends ServiceProvider
         $this->registerCreateModel();
         $this->registerCreateModule();
         $this->registerCreateView();
+        $this->registerCreateRequest();
         // to register a command to artisan command
-        $this->commands('command.create.controller','command.create.model','command.create.module','command.create.view');
+        $this->commands('command.create.controller','command.create.model','command.create.module','command.create.view','command.create.request');
     }
     protected function registerCreateModel()
     {
@@ -62,6 +64,13 @@ class GeneratorServiceProvider extends ServiceProvider
         $this->app->singleton('command.create.controller',function ($app)
         {
             return new CreateController($app['files']);
+        });
+    }
+    protected function registerCreateRequest()
+    {
+        $this->app->singleton('command.create.request',function ($app)
+        {
+            return new CreateRequest($app['files']);
         });
     }
      /**

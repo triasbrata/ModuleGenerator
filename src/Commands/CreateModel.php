@@ -1,8 +1,7 @@
 <?php
 
-namespace Bitdev\ModuleGenerator\Console\Commands;
+namespace Bitdev\ModuleGenerator\Commands;
 use Illuminate\Support\Str;
-use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 

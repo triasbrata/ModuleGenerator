@@ -1,25 +1,28 @@
 <?php 
 namespace Bitdev\ModuleGenerator\Http\Controllers;
-use Bitdev\ModuleGenerator\Repositories\RepositorieInterface;
+use Bitdev\ModuleGenerator\Contracts\ModelInterface;
+use Illuminate\Container\Container;
 use App\Http\Requests\Request;
 trait ControllerPatch{
 
 	protected $prefix;
 	protected $moduleName;
+	protected $removeNamespace;
 	private $repo;
 	private $request;
 	private $ajax = false;
 	private $validation;
-
-	function __construct(RepositorieInterface $repo, $nameReq) {
-		$this->repo = $repo;
-		$this->request = "Bitdev\ModuleGenerator\\Http\\Requests\\$nameReq";
+	private $app;
+	use ControllerHelper;
+	function __construct(ModelInterface $repo, $nameReq, Container $app) {
+		$this->app = $app;
+		$this->repo = $this->getModelNamespace().$repo;
+		$this->request = $this->getDefaultRouteNameSpace().$nameReq;
 		if(is_null($this->prefix ))
-		$this->prefix = str_replace('\\_', '.', strtolower(implode('_',array_slice(preg_split('/(?=[A-Z])/',str_replace(['Bitdev\ModuleGenerator\\Http\\Controllers\\','Controller'], '', get_called_class())), 1))));
-		$this->prefix = str_replace(['p_t_k'],['ptk'],$this->prefix);
+		$this->prefix = str_replace(['p_t_k'],['ptk'],$this->getPrefix());
 		if(is_null($this->moduleName ))
-		$this->moduleName = implode(' ',preg_split('/(?=[A-Z])/',str_replace(['Bitdev\ModuleGenerator\\Http\\Controllers\\','Admin\\','Data\\','Controller','\\'], '', get_called_class())));
-		$this->moduleName = str_replace(['P T K'],['Pendidik dan Tenaga Kependidikan'],$this->moduleName);
+		$this->moduleName = $this->generateModuleName();
+		
 	}
 	private function setAjax($value = false)
 	{
@@ -28,15 +31,16 @@ trait ControllerPatch{
 	}
 	public function store()
 	{
-		return $this->CreateOrUpdate($this->repo,\App::make($this->request),'store');
+		return $this->CreateOrUpdate($this->repo,$this->app->make($this->request),'store');
 	}
-	public function update(RepositorieInterface $repo)
+	public function update($repo)
 	{
-		return $this->CreateOrUpdate($repo,\App::make($this->request),'update');
+		$repo = $this->repo->find($repo);
+		return $this->CreateOrUpdate($repo,$this->app->make($this->request),'update');
 	}
-	public function show(RepositorieInterface $repo)
+	public function show($repo)
 	{
-		$data = $repo;
+		$data = $this->repo->find($repo);
 		$pageTitle = explode(' ', $this->moduleName)[0];
 		$pageDescription= implode(' ',array_slice(explode(' ',$this->moduleName), 1));
 		$documentTitle = "Deskripsi {$this->moduleName}";
@@ -52,48 +56,25 @@ trait ControllerPatch{
         $documentTitle =  "Keseluruhan {$this->moduleName}";
         return $this->view($this->uri('index'), compact('lists', 'pageTitle','pageDescription','documentTitle'));
 	}
-	public function edit(RepositorieInterface $repo)
+	public function edit($repo)
 	{
 
-		$data = $repo;
+		$data = $this->repo->find($repo);
 		$pageTitle = explode(' ', $this->moduleName)[0];
 		$pageDescription= implode(' ',array_slice(explode(' ',$this->moduleName), 1));
 		$documentTitle = "Perbarui {$this->moduleName}";
 		$form = "{$this->prefix}.form";
-		return $this->view("{$this->prefix}.edit", compact('data', 'pageTitle','pageDescription','documentTitle', 'form'));
+		return $this->view($this->uri('edit'), compact('data', 'pageTitle','pageDescription','documentTitle', 'form'));
 	}
 	public function create()
 	{
 		$pageTitle = explode(' ', $this->moduleName)[0];
 		$pageDescription= implode(' ',array_slice(explode(' ',$this->moduleName), 1));
 		$documentTitle = "Tambah {$this->moduleName}";
-        $form = $this->prefix.'.form';
+        $form = "{$this->prefix}.form";
         return $this->view($this->uri('create'), compact('pageTitle','pageDescription','documentTitle', 'form'));
 	}
 
-	/**
-	 * 
-	 * @param  string $index [description]
-	 * @return [type]        [description]
-	 */
-	protected function uri($index = "")
-	{
-	    $out = [
-	        'index' => "{$this->prefix}.index",
-	        'create' => "{$this->prefix}.create",
-	        'store' => "{$this->prefix}.store",
-	        'edit' => "{$this->prefix}.edit",
-	        'update' => "{$this->prefix}.update",
-	        'destroy' => "{$this->prefix}.destroy",
-	        'show' => "{$this->prefix}.show",
-	    ];
-	    return isset($out[$index]) ? $out[$index] : $out;
-	}
-	private function with($data)
-	{
-		$this->data = $data;
-		return $this;
-	}
 	protected function view($nameview="", $data = null)
 	{
 		

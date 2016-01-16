@@ -2,7 +2,7 @@
     "name": "triasbrata/modulegenerator",
     "description": "module ini memungkinkan user untuk membuat view,controller,d form request dan model",
     "license":"Apache-2.0",
-    "type": "project",
+    "type": "library",
     "authors": [
         {
             "name": "Trias Bratayudhana",
@@ -15,6 +15,14 @@
         }
     },
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=5.5.9",
+        "illuminate/support":"5.*",
+        "illuminate/contracts":"5.*",
+        "illuminate/container":"5.*",
+        "illuminate/console":"5.*",
+        "illuminate/filesystem":"5.*",
+        "illuminate/config":"5.*"
+
+        
     }
 }
