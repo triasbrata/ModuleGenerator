@@ -26,8 +26,8 @@ trait ControllerHelper{
 		if(property_exists($this,$property)){
 			return $this->{$property};
 		}
-		elseif($this->app['config']->has('bitdev'.$config)){
-			return $this->app['config']->get('bitdev'.$config);
+		elseif($this->app['config']->has('bitdev.generator'.$config)){
+			return $this->app['config']->get('bitdev.generator'.$config);
 		}
 		return null;
 	}
@@ -50,7 +50,7 @@ trait ControllerHelper{
 		$raw = implode(' ',preg_split('/(?=[A-Z])/',str_replace($this->getRemoveNamespace(), '', get_called_class())));
 		return str_replace($search,$replacer,$raw);
 	}
-	
+
 	/**
 	 * 
 	 * @param  string $index [description]

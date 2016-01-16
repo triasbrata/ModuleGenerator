@@ -21,7 +21,7 @@ class GeneratorServiceProvider extends ServiceProvider
     public function boot()
     {
          $this->publishes([
-                __DIR__.'/config/bitdev.php' => config_path('bitdev.php'),
+                __DIR__.'/configs/bitdev.php' => config_path('bitdev.php'),
         ]);
     }
 

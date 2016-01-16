@@ -12,8 +12,8 @@ abstract class GeneratorCommand extends BaseGeneratorCommand {
 	function __construct(Filesystem $file, Container $app) {
 		parent::__construct($file);
         $this->app = $app;
-        if(! $this->app['config']->has('bitdev.costume.namespace')) throw new Exception("Namespace not define", 1);
-		$this->namespace = $this->app['config']->get('bitdev.costume.namespace');
+        if(! $this->app['config']->has('bitdev.generate.namespace.project')) throw new Exception("Namespace not define", 1);
+		$this->namespace = $this->app['config']->get('bitdev.generate.namespace');
 	}
 
 	protected function getPath($name)
