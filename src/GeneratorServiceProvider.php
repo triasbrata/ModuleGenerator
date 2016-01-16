@@ -1,6 +1,6 @@
 <?php
 
-namespace Bitdev\ModuleGenerator\Providers;
+namespace Bitdev\ModuleGenerator;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -20,7 +20,9 @@ class GeneratorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+         $this->publishes([
+                __DIR__.'/config/bitdev.php' => config_path('bitdev.php'),
+        ]);
     }
 
     /**
@@ -37,6 +39,7 @@ class GeneratorServiceProvider extends ServiceProvider
         $this->registerCreateRequest();
         // to register a command to artisan command
         $this->commands('command.create.controller','command.create.model','command.create.module','command.create.view','command.create.request');
+
     }
     protected function registerCreateModel()
     {
