@@ -1,7 +1,7 @@
 <?php 
 
 namespace Bitdev\ModuleGenerator\Commands;
-use Config;
+use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\GeneratorCommand as BaseGeneratorCommand;
 use Illuminate\Support\Str;
@@ -9,16 +9,20 @@ abstract class GeneratorCommand extends BaseGeneratorCommand {
 	protected $app;
 	protected $namespace;
 
-	function __construct(Filesystem $file) {
+	function __construct(Filesystem $file, Container $app) {
 		parent::__construct($file);
-		$this->namespace = Config::get('costume.namespace');
+        $this->app = $app;
+        if(! $this->app['config']->has('bitdev.costume.namespace')) throw new Exception("Namespace not define", 1);
+		$this->namespace = $this->app['config']->get('bitdev.costume.namespace');
 	}
 
 	protected function getPath($name)
     {
 
         $name = str_replace($this->namespace, '', $name);
-        return str_finish(Config::get('path.generate.base'),'/').str_replace('\\', '/', $name).'.php';
+        if(! $this->app['config']->has('bitdev.generate.basepath')) throw new Exception("Basepath not define", 1);
+        $base_path = $this->app['config']->get('bitdev.generate.basepath');
+        return str_finish(,'/').str_replace('\\', '/', $name).'.php';
     }
      protected function parseName($name)
     {
@@ -27,7 +31,6 @@ abstract class GeneratorCommand extends BaseGeneratorCommand {
         if (Str::startsWith($name, $rootNamespace)) {
             return $name;
         }
-
         if (Str::contains($name, '/')) {
             $name = str_replace('/', '\\', $name);
         }
