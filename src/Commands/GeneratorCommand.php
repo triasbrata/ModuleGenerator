@@ -22,7 +22,7 @@ abstract class GeneratorCommand extends BaseGeneratorCommand {
         $name = str_replace($this->namespace, '', $name);
         if(! $this->app['config']->has('bitdev.generate.basepath')) throw new Exception("Basepath not define", 1);
         $base_path = $this->app['config']->get('bitdev.generate.basepath');
-        return str_finish(,'/').str_replace('\\', '/', $name).'.php';
+        return str_finish($base_path,'/').str_replace('\\', '/', $name).'.php';
     }
      protected function parseName($name)
     {
