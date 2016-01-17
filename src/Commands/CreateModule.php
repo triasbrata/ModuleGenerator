@@ -45,38 +45,23 @@ class CreateModule extends Command
     {
         if(is_null($this->argument('request'))){
             $this->info('Generate controller and Request class');
-            $this->call('create:controller',['name'=>$this->getControllerName()]);
+            $this->call('create:controller',[
+              'name'=>$this->getControllerName()
+            ]);
         }else{
             $this->info('Generate controller and Request class');
-            $this->call('create:controller',['name'=>$this->getControllerName(),'request'=>$this->argument('request')]);
+            $this->call('create:controller',[
+                'name' => $this->getControllerName(),
+                'request' => $this->argument('request')
+            ]);
         }
-        if( is_null($this->argument('repo')) ){
-            if(is_null($this->argument('abstract'))){
-                $this->info('Generate model class');
-                $this->call('create:model',[ 
-                    'name' => $this->getModelname(),
-                    'repo' => $this->argument('repo'),
-                    'abstract' => $this->argument('abstract'),
-                    '--migration'=>true
-                ]);
-            }
-            else
-            {
-                $this->info('Generate model class');
-                $this->call('create:model',[ 
-                    'name' => $this->getModelname(),
-                    'repo' => $this->argument('repo'),
-                    '--migration'=>true
-                ]);
-            }
-        }else{
-            $this->info('Generate model class');
-            $this->call('create:model',[ 'name' => $this->getModelname(),'--migration'=>true ]);
-        }
-        $this->info('Generate view');
-        $this->call('create:view',[
-            'name' => $this->getView()
+        $this->info('Generate model class');
+        $this->call('create:model',[
+          'name' => $this->getModelname(),
+          '--migration'=> true
         ]);
+        $this->info('Generate view');
+        $this->call('create:view',['name' => $this->getView()]); 
     }
     protected function getArguments()
     {
@@ -84,9 +69,6 @@ class CreateModule extends Command
             ['controller', InputArgument::REQUIRED, 'The name of the class controller'],
             ['request',InputArgument::OPTIONAL, 'The name of request for injecting to the controller'],
             ['model', InputArgument::OPTIONAL, 'The name of the class model'],
-            ['repo',InputArgument::OPTIONAL, 'The name of repositories'],
-            ['abstract',InputArgument::OPTIONAL, 'The name of model abstract class '],
-
         ];
     }
 }

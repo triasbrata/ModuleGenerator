@@ -44,17 +44,9 @@ class CreateModel extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Repositories\\'.$this->getRepo();
-    }
-    protected function getRepo()
-    {
-        return ! is_null($this->argument('repo')) ? $this->argument('repo') : 'Eloquent';
-    }
-    public function getAbstractModelName()
-    {
-        return $this->argument('abstract') != 'Eloquent' ? 
-                    'Illuminate\Database\Eloquent\Model':
-                    $this->argument('abstract') ;
+        if($this->app['config']->has('bitdev.generated.namespace.model'))
+            return $rootNamespace."\\".$this->app['config']->get('bitdev.generated.namespace.model');
+        return $rootNamespace;
     }
     /**
      * Build the class with the given name.
@@ -70,13 +62,7 @@ class CreateModel extends GeneratorCommand
             $this->call('make:migration', ['name' => "create_{$table}_table", '--create' => $table]);
 
         }
-        return $this->replaceNamespace($stub, $name)->replaceAbstractClass($stub,$this->getAbstractModelName())->replaceClass($stub, $name);
-    }
-
-    protected function replaceAbstractClass(&$stub, $name)
-    {
-        $stub = str_replace('DummyAbstractModel', $name, $stub);
-        return $this;
+        return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
     }
 
     protected function getArguments()
