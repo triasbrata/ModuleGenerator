@@ -3,6 +3,9 @@ trait ControllerHelper{
 
 	private function getDefaultRequestNamespace(){
 		$raw = $this->getDefault('requestNamespace','namespace.request');
+		if(is_null($raw) || empty($raw)){
+			$raw = $this->app->getNamespace().'\\Http\\Controllers\\Request';
+		}
 		return $this->namespaceChecker($raw);
 		
 	}
@@ -16,11 +19,13 @@ trait ControllerHelper{
 		}
 		return $string;
 	}
+
 	private function getModelNamespace()
 	{
 		$raw = $this->getDefault('modelNamespace','namespace.model');
 		return $this->namespaceChecker($raw);
 	}
+
 	private function getDefault($property,$config)
 	{
 		if(property_exists($this,$property)){
@@ -31,22 +36,46 @@ trait ControllerHelper{
 		}
 		return null;
 	}
+
 	private function getRemoveNamespace()
 	{
-		return $this->getDefault('removeNamespace','namespace.remove');
+		return $this->getDefault('removeNamespace','namespace.remove.modulename');
 	}
+
 	private function getPrefix()
 	{
-		$removePrefix = $this->getDefault('removePrefix','prefix.default');
+		
 		$raw = get_called_class();
 		$raw = str_replace($this->removePrefix(), '',$raw);
 		$raw = Str::snake($raw,'_');
 		$raw = str_replace('\\_','.',$raw);
-		return $raw;
+		return $this->prefixFixer($raw);
 	}
+	private function prefixFixer($prefix)
+	{
+		if( !is_array($this->getDefault('prefixFixer','prefixFixer')) )
+		 throw new Exception("Error Prefix fixer must be array()", 1);
+		foreach ($this->getDefault('prefixFixer','prefixFixer') as $key => $value) {
+			$search[] = $key;
+			$replacer[] = $value;
+		}
+		return str_replace($search,$replacer,$prefix);
+
+	}
+	public function removePrefix()
+	{
+		return $this->getDefault('removePrefix','namespace.remove.prefix');
+	}
+
 	private function generateModuleName(){
-		$search = $this->getDefault('searchModuleName','modulename.search');
-		$replacer = $this->getDefault('replacerModuleName','modulename.replacer');
+		if(!is_array($this->getDefault('replacerModuleName','modulename'))){
+			throw new Exception("Error Replacer Module Name must be array()", 1);
+			
+		}
+		foreach ($this->getDefault('replacerModuleName','modulename') as $key => $value) {
+			$search[] = $key;
+			$replacer[] = $value;
+		}
 		$raw = implode(' ',preg_split('/(?=[A-Z])/',str_replace($this->getRemoveNamespace(), '', get_called_class())));
 		return str_replace($search,$replacer,$raw);
 	}
@@ -74,4 +103,5 @@ trait ControllerHelper{
 		$this->data = $data;
 		return $this;
 	}
+
 }

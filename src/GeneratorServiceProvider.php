@@ -45,35 +45,35 @@ class GeneratorServiceProvider extends ServiceProvider
     {
         $this->app->singleton('command.create.model',function ($app)
         {
-            return new CreateModel($app['files']);
+            return new CreateModel($app['files'],$app);
         });
     }
     protected function registerCreateModule()
     {
         $this->app->singleton('command.create.module',function ($app)
         {
-            return new CreateModule($app['files']);
+            return new CreateModule($app['files'],$app);
         });
     }
     protected function registerCreateView()
     {
         $this->app->singleton('command.create.view',function ($app)
         {
-            return new CreateView($app['files']);
+            return new CreateView($app['files'],$app);
         });
     }
     protected function registerCreateController()
     {
         $this->app->singleton('command.create.controller',function ($app)
         {
-            return new CreateController($app['files']);
+            return new CreateController($app['files'],$app);
         });
     }
     protected function registerCreateRequest()
     {
         $this->app->singleton('command.create.request',function ($app)
         {
-            return new CreateRequest($app['files']);
+            return new CreateRequest($app['files'],$app);
         });
     }
      /**

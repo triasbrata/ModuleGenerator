@@ -83,8 +83,6 @@ class CreateModel extends GeneratorCommand
     {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the class'],
-            ['repo',InputArgument::OPTIONAL, 'The name of repositories'],
-            ['abstract',InputArgument::OPTIONAL, 'The name of model abstract class '],
         ];
     }
     protected function getOptions()

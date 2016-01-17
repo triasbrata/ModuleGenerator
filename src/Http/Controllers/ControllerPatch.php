@@ -14,14 +14,14 @@ trait ControllerPatch{
 	private $validation;
 	private $app;
 	use ControllerHelper;
-	function __construct(ModelInterface $repo, $nameReq, Container $app) {
+	function __construct(ModelInterface $repo, Container $app, $nameReq) {
 		$this->app = $app;
-		$this->repo = $this->getModelNamespace().$repo;
+		$this->repo = $repo;
 		$this->request = $this->getDefaultRouteNameSpace().$nameReq;
 		if(is_null($this->prefix ))
-		$this->prefix = str_replace(['p_t_k'],['ptk'],$this->getPrefix());
+			$this->prefix =$this->getPrefix();
 		if(is_null($this->moduleName ))
-		$this->moduleName = $this->generateModuleName();
+			$this->moduleName = $this->generateModuleName();
 		
 	}
 	private function setAjax($value = false)
@@ -74,7 +74,6 @@ trait ControllerPatch{
         $form = "{$this->prefix}.form";
         return $this->view($this->uri('create'), compact('pageTitle','pageDescription','documentTitle', 'form'));
 	}
-
 	protected function view($nameview="", $data = null)
 	{
 		
@@ -92,7 +91,6 @@ trait ControllerPatch{
 	        }
 	    }
 	}
-
 }
 
 

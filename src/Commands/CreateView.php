@@ -14,7 +14,7 @@ class CreateView extends Command
 
     protected $path;
     protected $files;
-    protected $views = ['index','create','edit','show'];
+    protected $views = ['index','create','edit','show','form'];
     function __construct(Filesystem $files) 
     {
         
