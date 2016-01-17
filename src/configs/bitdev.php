@@ -38,7 +38,10 @@
 		/**
 		 * pengaturan basepath dari applikasi
 		 */
-		'basepath' => '',
+		'basepath' => [
+			'apps'=>base_path('/app'),
+			'view'=>base_path('resources/view')
+		],
 	],
 
 

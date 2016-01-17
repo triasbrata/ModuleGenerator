@@ -3,6 +3,7 @@
 namespace Bitdev\ModuleGenerator\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use App;
 use Illuminate\Support\Str;
@@ -12,13 +13,13 @@ use Symfony\Component\Console\Input\InputArgument;
 class CreateView extends Command
 {
 
-    protected $path;
+    protected $app;
     protected $files;
     protected $views = ['index','create','edit','show','form'];
-    function __construct(Filesystem $files) 
+    function __construct(Filesystem $files,Container $app) 
     {
         
-        $this->path = App::getInstance()['config']['path.generate.view'];
+        $this->app = $app ;
         $this->files = $files;
         parent::__construct();
 
@@ -79,7 +80,15 @@ class CreateView extends Command
         }
     }
     public function fire()
-    {
+    {   
+        if( !$this->app['config']->has('bitdev.generate.basepath.view') || empty($this->app['config']->get('bitdev.generate.basepath.view')) ){
+            $this->path = $this->app['path'].'/resources/view/';
+            $this->warn('base path view defined default as '. trim($this->path,'/'));
+        }else{
+            $this->path = base_path($this->app['config']['bitdev.generate.basepath.view'].'/resources/view/');
+
+            $this->info('base path view is '.trim($this->path,'/'));
+        }
         foreach ($this->views as $view) {
             $path = $this->getPath($view);
            if($this->files->exists($path)){

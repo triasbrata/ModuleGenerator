@@ -27,12 +27,12 @@ abstract class GeneratorCommand extends BaseGeneratorCommand {
             $this->namespace = $this->app['config']->get('bitdev.generate.namespace.project');
             $this->info('namespace using '.trim($this->namespace,'\\'));
         }
-        if(! $this->app['config']->has('bitdev.generate.basepath') || 
-            empty($this->app['config']->get('bitdev.generate.basepath')) ) {
+        if(! $this->app['config']->has('bitdev.generate.basepath.apps') || 
+            empty($this->app['config']->get('bitdev.generate.basepath.apps')) ) {
             $this->basepath = $this->app['path'];
             $this->warn('Basepath will defined as '.trim($this->basepath,'/'));
         }else{
-            $this->basepath = $this->app['config']->get('bitdev.generate.basepath');
+            $this->basepath = $this->app['config']->get('bitdev.generate.basepath.apps');
             $this->info('basepath using '.trim($this->basepath,'/'));
         }
         parent::fire();
