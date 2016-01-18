@@ -69,14 +69,7 @@ class CreateController extends GeneratorCommand
         $this->call('create:request',['name'=>$name]);
         return $this;
     }
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-    }
+   
     protected function getArguments()
     {
         return [
