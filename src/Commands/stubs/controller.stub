@@ -4,8 +4,8 @@ namespace DummyNamespace;
 
 use Bitdev\ModuleGenerator\Http\Controllers\Controller;
 
-use Bitdev\Project\Repositories\Eloquent\Model as Model;
-use Bitdev\Project\Http\Requests\DummyRequest;
+use NamespaceProject\Model as Model;
+use NamespaceProject\Http\Requests\DummyRequest;
 
 class DummyClass extends Controller
 {

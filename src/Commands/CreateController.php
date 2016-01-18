@@ -33,9 +33,7 @@ class CreateController extends GeneratorCommand
      * @return string
      */
     protected function getStub(){
-        return $this->option('plain') ?
-             __DIR__.'/stubs/controller.plain.stub' : 
-             __DIR__.'/stubs/controller.stub' ;
+           return  __DIR__.'/stubs/controller.stub' ;
     }
     /**
      * Get the default namespace for the class.
@@ -57,7 +55,18 @@ class CreateController extends GeneratorCommand
     {
         $stub = $this->files->get($this->getStub());
         $nameRequest = is_null($this->argument('request')) ? str_replace([$this->getNamespace($name).'\\','Controller'], '', $name).'Request' :  $this->argument('request');
-        return $this->replaceNamespace($stub, $name)->replaceRequest($stub,$nameRequest)->replaceClass($stub, $name);
+        return $this->replaceNamespace($stub, $name)->replaceRequest($stub,$nameRequest)->replaceClass($stub, $name)->replaceNamespaceProject($stubs);
+    }
+    protected function replaceNamespaceProject(&$stub)
+    {
+        if ($this->app['config']->has('bitdev.generate.namespace.project')){
+            $namespaceProject =  $this->app['config']->get('bitdev.generate.namespace.project')
+        }else{
+            $namespaceProject = $this->app->getNamespace();
+            $this->warn('Namespace using default '.trim($namespaceProject));
+        }
+        $stub = str_replace('NamespaceProject',$namespaceProject,$stub);
+        return $this;
     }
     protected function replaceRequest(&$stub, $name)
     {
@@ -72,9 +81,6 @@ class CreateController extends GeneratorCommand
      */
     protected function getOptions()
     {
-        return [
-            ['plain', null, InputOption::VALUE_NONE, 'Generate an empty controller class.'],
-        ];
     }
     protected function getArguments()
     {

@@ -3,10 +3,13 @@
 namespace DummyNamespace;
 
 use Bitdev\ModuleGenerator\Http\Controllers\Controller;
-use Bitdev\ModuleGenerator\Repositories\RepositorieInterface;
 
-use DummyRequest;
+use NamespaceProject\Model as Model;
+use NamespaceProject\Http\Requests\DummyRequest;
 
 class DummyClass extends Controller
 {
+     function __construct(Model $repo) {
+     	parent::__construct($repo,'DummyRequest');
+     }
 }
