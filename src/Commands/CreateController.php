@@ -59,13 +59,8 @@ class CreateController extends GeneratorCommand
     }
     protected function replaceNamespaceProject(&$stub)
     {
-        if ($this->app['config']->has('bitdev.generate.namespace.project')){
-            $namespaceProject =  $this->app['config']->get('bitdev.generate.namespace.project')
-        }else{
-            $namespaceProject = $this->app->getNamespace();
-            $this->warn('Namespace using default '.trim($namespaceProject));
-        }
-        $stub = str_replace('NamespaceProject',$namespaceProject,$stub);
+        
+        $stub = str_replace('NamespaceProject',$this->namespace,$stub);
         return $this;
     }
     protected function replaceRequest(&$stub, $name)
