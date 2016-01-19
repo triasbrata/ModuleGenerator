@@ -7,8 +7,7 @@ trait ControllerPatch{
 
 	protected $prefix;
 	protected $moduleName;
-	protected $removeNamespace = ['Bitdev\\Project\\Http\\Controllers\\','Admin\\','Data\\','Controller','\\'];
-	private $repo;
+	protected $repo;
 	private $request;
 	private $ajax = false;
 	private $validation;
@@ -21,8 +20,7 @@ trait ControllerPatch{
 		if(is_null($this->prefix ))
 			$this->prefix =$this->getPrefix();
 		if(is_null($this->moduleName ))
-			$this->moduleName = $this->generateModuleName();
-		
+			$this->moduleName = $this->generateModuleName();	
 	}
 	private function setAjax($value = false)
 	{
@@ -35,12 +33,13 @@ trait ControllerPatch{
 	}
 	public function update($repo)
 	{
-		$repo = $this->repo->find($repo);
+		$repo = $repo instanceof ModelInterface ? $repo :  $this->repo->find($repo);
+		// $repo = $this->repo->find($repo);
 		return $this->CreateOrUpdate($repo,$this->app->make($this->request),'update');
 	}
 	public function show($repo)
 	{
-		$data = $this->repo->find($repo);
+		$data = $repo instanceof ModelInterface ? $repo :  $this->repo->find($repo);
 		$pageTitle = explode(' ', $this->moduleName)[0];
 		$pageDescription= implode(' ',array_slice(explode(' ',$this->moduleName), 1));
 		$documentTitle = "Deskripsi {$this->moduleName}";
@@ -48,7 +47,8 @@ trait ControllerPatch{
 	}
 	public function index()
 	{
-		$lists = $this->repo->all();
+		
+		$lists = $this->repo instanceof ModelInterface ? $this->repo->all() : $this->repo;
 		$title = explode(' ', $this->moduleName);
 		$midTitle = floor(count($title)/2)+1 < count($title) ?  floor(count($title)/2)+1 : floor(count($title)/2);
         $pageTitle = implode(' ',array_slice($title, 0,$midTitle));
@@ -57,9 +57,8 @@ trait ControllerPatch{
         return $this->view($this->uri('index'), compact('lists', 'pageTitle','pageDescription','documentTitle'));
 	}
 	public function edit($repo)
-	{
-
-		$data = $this->repo->find($repo);
+	{	
+		$data = $repo instanceof ModelInterface ? $repo :  $this->repo->find($repo);
 		$pageTitle = explode(' ', $this->moduleName)[0];
 		$pageDescription= implode(' ',array_slice(explode(' ',$this->moduleName), 1));
 		$documentTitle = "Perbarui {$this->moduleName}";

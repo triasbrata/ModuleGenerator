@@ -84,13 +84,11 @@ class CreateView extends Command
     {   
         if( !$this->app['config']->has('bitdev.generate.basepath.view') || empty($this->app['config']->get('bitdev.generate.basepath.view')) ){
             $this->path = $this->app['path'].'/resources/view/';
-
             $this->warn('base path view defined default as '. trim($this->path,'/'));
         }else{
             $this->path = $this->app['config']['bitdev.generate.basepath.view'];
             $this->info('base path view is '.trim($this->path,'/'));
         }
-        dd($this->path);
         foreach ($this->views as $view) {
             $path = $this->getPath($view);
            if($this->files->exists($path)){

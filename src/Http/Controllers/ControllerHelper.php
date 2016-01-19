@@ -7,7 +7,7 @@ trait ControllerHelper{
 		$raw = $this->getDefault('requestNamespace','namespace.formRequest');
 
 		if(is_null($raw) || empty($raw)){
-			$raw = $this->app->getNamespace().'\\Http\\Controllers\\Request';
+			$raw = $this->app->getNamespace().'Http\\Requests';
 		}
 		return $this->namespaceChecker($raw);
 		
@@ -114,5 +114,4 @@ trait ControllerHelper{
 		$this->data = $data;
 		return $this;
 	}
-
 }
