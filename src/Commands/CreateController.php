@@ -69,7 +69,7 @@ class CreateController extends GeneratorCommand
         $this->call('create:request',['name'=>$name]);
         return $this;
     }
-   
+    
     protected function getArguments()
     {
         return [

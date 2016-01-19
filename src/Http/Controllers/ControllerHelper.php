@@ -1,8 +1,11 @@
-<?php namespace Bitdev\ModuleGenerator\Http;
+<?php namespace Bitdev\ModuleGenerator\Http\Controllers;
+use Illuminate\Support\Str;
+use Exception;
 trait ControllerHelper{
 
 	private function getDefaultRequestNamespace(){
-		$raw = $this->getDefault('requestNamespace','namespace.request');
+		$raw = $this->getDefault('requestNamespace','namespace.formRequest');
+
 		if(is_null($raw) || empty($raw)){
 			$raw = $this->app->getNamespace().'\\Http\\Controllers\\Request';
 		}
@@ -31,8 +34,12 @@ trait ControllerHelper{
 		if(property_exists($this,$property)){
 			return $this->{$property};
 		}
-		elseif($this->app['config']->has('bitdev.generator'.$config)){
-			return $this->app['config']->get('bitdev.generator'.$config);
+		else if(!empty($config)){
+			if($this->app['config']->has('bitdev.generate.'.$config)){
+				return $this->app['config']->get('bitdev.generate.'.$config);
+			}
+			return null;
+			// return $this->app['config']->get('bitdev');
 		}
 		return null;
 	}
@@ -55,6 +62,8 @@ trait ControllerHelper{
 	{
 		if( !is_array($this->getDefault('prefixFixer','prefixFixer')) )
 		 throw new Exception("Error Prefix fixer must be array()", 1);
+		$search = array();
+		$replacer = array();
 		foreach ($this->getDefault('prefixFixer','prefixFixer') as $key => $value) {
 			$search[] = $key;
 			$replacer[] = $value;
@@ -72,6 +81,8 @@ trait ControllerHelper{
 			throw new Exception("Error Replacer Module Name must be array()", 1);
 			
 		}
+		$search = array();
+		$replacer = array();
 		foreach ($this->getDefault('replacerModuleName','modulename') as $key => $value) {
 			$search[] = $key;
 			$replacer[] = $value;

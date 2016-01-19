@@ -22,7 +22,7 @@
 			 * prefix
 			 */
 			'remove'=>[
-				'prefix'=>array(), 
+				'prefix'=>array("App\\Http\\Controllers\\","Controller"), 
 				'modulename'=>array() 
 			]  
 		],
@@ -40,9 +40,7 @@
 		 */
 		'basepath' => [
 			'apps'=>base_path('/app'),
-			'view'=>base_path('resources/view')
+			'view'=>base_path('resources/views')
 		],
 	],
-
-
 ];

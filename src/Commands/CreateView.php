@@ -13,9 +13,10 @@ use Symfony\Component\Console\Input\InputArgument;
 class CreateView extends Command
 {
 
-    protected $app;
-    protected $files;
-    protected $views = ['index','create','edit','show','form'];
+    private $app;
+    private $files;
+    private $path;
+    private $views = ['index','create','edit','show','form'];
     function __construct(Filesystem $files,Container $app) 
     {
         
@@ -41,7 +42,7 @@ class CreateView extends Command
      *
      * @var string
      */
-    protected function getStub($name)
+    private function getStub($name)
     {
         return __DIR__.'/stubs/view/'.$name.'.stub';
     }
@@ -51,7 +52,7 @@ class CreateView extends Command
      * @param  string  $name
      * @return string
      */
-    protected function getPath($name)
+    private function getPath($name)
     {
         $path = str_finish($this->compilePath($name),'/');
         
@@ -73,7 +74,7 @@ class CreateView extends Command
      * @param  string  $path
      * @return string
      */
-    protected function makeDirectory($path)
+    private function makeDirectory($path)
     {
         if (! $this->files->isDirectory(dirname($path))) {
             $this->files->makeDirectory(dirname($path), 0777, true, true);
@@ -83,12 +84,13 @@ class CreateView extends Command
     {   
         if( !$this->app['config']->has('bitdev.generate.basepath.view') || empty($this->app['config']->get('bitdev.generate.basepath.view')) ){
             $this->path = $this->app['path'].'/resources/view/';
+
             $this->warn('base path view defined default as '. trim($this->path,'/'));
         }else{
-            $this->path = base_path($this->app['config']['bitdev.generate.basepath.view'].'/resources/view/');
-
+            $this->path = $this->app['config']['bitdev.generate.basepath.view'];
             $this->info('base path view is '.trim($this->path,'/'));
         }
+        dd($this->path);
         foreach ($this->views as $view) {
             $path = $this->getPath($view);
            if($this->files->exists($path)){
@@ -101,6 +103,9 @@ class CreateView extends Command
            }
         }        
     }
+    /**
+     * @overiding
+     */
     protected function getArguments()
     {
         return [

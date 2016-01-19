@@ -1,2 +1,2 @@
-<?php namespace Bitdev\ModuleGenerator\Contracts\ModelInterface;
+<?php namespace Bitdev\ModuleGenerator\Contracts;
 interface ModelInterface {}

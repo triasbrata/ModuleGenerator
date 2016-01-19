@@ -7,7 +7,7 @@ trait ControllerPatch{
 
 	protected $prefix;
 	protected $moduleName;
-	protected $removeNamespace;
+	protected $removeNamespace = ['Bitdev\\Project\\Http\\Controllers\\','Admin\\','Data\\','Controller','\\'];
 	private $repo;
 	private $request;
 	private $ajax = false;
@@ -17,7 +17,7 @@ trait ControllerPatch{
 	function __construct(ModelInterface $repo, Container $app, $nameReq) {
 		$this->app = $app;
 		$this->repo = $repo;
-		$this->request = $this->getDefaultRouteNameSpace().$nameReq;
+		$this->request = $this->getDefaultRequestNamespace().$nameReq;
 		if(is_null($this->prefix ))
 			$this->prefix =$this->getPrefix();
 		if(is_null($this->moduleName ))
