@@ -23,7 +23,7 @@
 			 */
 			'remove'=>[
 				'prefix'=>array("App\\Http\\Controllers\\","Controller"), 
-				'modulename'=>array() 
+				'modulename'=>array("App\\Http\\Controllers\\","Controller")
 			]  
 		],
 		/**
@@ -34,7 +34,7 @@
 		 * untuk mengganti prefix yang tidak sesuai dengan prefix yang lebih cocok
 		 * FBI => F_B_I kurang bagus lalu di gantik menjadi fbi
 		 */
-		'prefixFixer'=>array(),
+		'prefixFixer'=>array('kondisi_usaha'=>'kondisiusaha'),
 		/**
 		 * pengaturan basepath dari applikasi
 		 */

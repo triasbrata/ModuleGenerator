@@ -40,7 +40,7 @@ class GeneratorServiceProvider extends ServiceProvider
         $this->registerCreateRequest();
         // to register a command to artisan command
         $this->commands('command.create.controller','command.create.model','command.create.module','command.create.view','command.create.request');
-        $this->mergeConfigFrom(__DIR__.'/configs/bitdev.php','bitdev');
+//        $this->mergeConfigFrom(__DIR__.'/configs/bitdev.php','bitdev');
 
     }
     protected function registerCreateModel()
