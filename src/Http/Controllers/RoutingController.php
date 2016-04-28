@@ -10,8 +10,8 @@ trait RoutingController{
 	 */
 	public function toIndex()
 	{
-	    return redirect()->route($this->uri('index'));
-	}
+       return redirect()->route($this->uri('index'));
+   }
 	/**
 	 * mengubah kata dari method pada cotroller
 	 * @param  string $from 
@@ -21,13 +21,13 @@ trait RoutingController{
     {
         switch ($from) {
             case 'store':
-                return "ditambah";
+            return "ditambah";
             break;
             case 'update':
-                return "diperbarui";
+            return "diperbarui";
             break;
             case 'destroy':
-                return "dihapus";
+            return "dihapus";
             break;
         }
     }
@@ -37,14 +37,16 @@ trait RoutingController{
      * @param  string $from [description]
      * @return \Routing
      */
-	public function routeAndSuccess($from)
+    public function routeAndSuccess($from,$messages = '')
     {
-        $message = "{$this->moduleName} berhasil ";
-        $message.= $this->routeMessage($from);
+        if(!empty($messages)){
+            $message = "{$this->moduleName} berhasil ";
+            $message.= $this->routeMessage($from);
+        }
         $content = $this->setAjax(true)->index()['content'];
         return \Request::ajax()?
-             \Response::json(compact('message','content')):
-             $this->toIndex()->withSuccess([$message]);
+        \Response::json(compact('message','content')):
+        $this->toIndex()->withSuccess([$message]);
     }
     /**
      * ruting kembali ke form dan bersama inputan yang 
@@ -52,20 +54,22 @@ trait RoutingController{
      * @param  string $from 
      * @return mix 
      */
-    public function routeBackWithError($from)
+    public function routeBackWithError($from,$messages = '')
     {
-        $message = "{$this->moduleName} gagal ";
-        $message.= $this->routeMessage($from);
+        if(!empty($messages)){
+            $message = "{$this->moduleName} gagal ";
+            $message.= $this->routeMessage($from);
+        }
         $e = Session::get('errors',new MessageBag);
         if($e instanceof MessageProvider){
             $e = $e->getMessageBag()->add($from,$message);
         }else{
-             $e = MessageBag((array) $e);
-        }
-        Session::forget('errors');
-        $errors = $e->all();
-        return \Request::ajax() ?
-            \Response::json(compact('errors'),422):
-            redirect()->back()->withInput()->withErrors($e);
-    }
+           $e = MessageBag((array) $e);
+       }
+       Session::forget('errors');
+       $errors = $e->all();
+       return \Request::ajax() ?
+       \Response::json(compact('errors'),422):
+       redirect()->back()->withInput()->withErrors($e);
+   }
 }
