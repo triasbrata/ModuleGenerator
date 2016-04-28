@@ -37,9 +37,9 @@ trait RoutingController{
      * @param  string $from [description]
      * @return \Routing
      */
-    public function routeAndSuccess($from,$messages = '')
+    public function routeAndSuccess($from,$message = '')
     {
-        if(!empty($messages)){
+        if(!empty($message)){
             $message = "{$this->moduleName} berhasil ";
             $message.= $this->routeMessage($from);
         }
@@ -54,9 +54,9 @@ trait RoutingController{
      * @param  string $from 
      * @return mix 
      */
-    public function routeBackWithError($from,$messages = '')
+    public function routeBackWithError($from,$message = '')
     {
-        if(!empty($messages)){
+        if(!empty($message)){
             $message = "{$this->moduleName} gagal ";
             $message.= $this->routeMessage($from);
         }
