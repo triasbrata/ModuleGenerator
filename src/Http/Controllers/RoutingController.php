@@ -17,7 +17,7 @@ trait RoutingController{
 	 * @param  string $from 
 	 * @return mix
 	 */
-	public function routeMessage($from)
+	protected function routeMessage($from)
     {
         switch ($from) {
             case 'store':
